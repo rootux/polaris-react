@@ -31,7 +31,7 @@ describe('<Focus />', () => {
     expect(input).toBe(document.activeElement);
   });
 
-  it('will not focus the first focusable node is the `disabled` is true', () => {
+  it('will not focus the first focusable node if `disabled` is true', () => {
     const focus = mountWithAppProvider(
       <FocusTestWrapper disabled>
         <input />
