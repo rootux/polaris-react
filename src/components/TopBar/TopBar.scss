@@ -98,8 +98,18 @@ $context-control-expand-after: 1400px;
   width: 100%;
   margin: 0;
   max-width: none;
+  position: relative;
+  margin-left: calc((100% - #{$page-max-width}) / 2);
 
-  @include offset-search-container($margin: true, $padding: false);
+  @include breakpoint-after($context-control-expand-after) {
+    margin-left: calc(
+      (100% - #{$page-max-width + $context-control-extra-spacing}) / 2
+    );
+  }
+
+  @media (max-width: $page-left-alignment-breakpoint-max) {
+    margin-left: 0;
+  }
 }
 
 .SecondaryMenu {

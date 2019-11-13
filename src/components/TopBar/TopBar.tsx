@@ -109,9 +109,7 @@ export const TopBar: React.FunctionComponent<TopBarProps> & {
 
   const searchResultsMarkup =
     searchResults && searchResultsVisible ? (
-      <Search visible={searchResultsVisible} onDismiss={onSearchResultsDismiss}>
-        {searchResults}
-      </Search>
+      <Search visible={searchResultsVisible}>{searchResults}</Search>
     ) : null;
 
   const searchMarkup = searchField ? (
@@ -125,7 +123,7 @@ export const TopBar: React.FunctionComponent<TopBarProps> & {
     <div className={styles.TopBar}>
       {navigationButtonMarkup}
       {contextMarkup}
-      <div className={styles.Contents}>
+      <div className={styles.Contents} onClick={onSearchResultsDismiss}>
         <div className={styles.SearchField}>{searchMarkup}</div>
         <div className={styles.SecondaryMenu}>{secondaryMenu}</div>
         {userMenu}

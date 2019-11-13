@@ -34,6 +34,7 @@ export class Search extends React.PureComponent<SearchProps, never> {
   }
 
   private handleDismiss = ({target}: React.MouseEvent<HTMLElement>) => {
+    console.log('in handle dismiss');
     const {onDismiss} = this.props;
 
     if (onDismiss != null && target === this.node.current) {

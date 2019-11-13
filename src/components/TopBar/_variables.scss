@@ -14,6 +14,7 @@ $page-left-alignment-breakpoint-max: 1268px;
 $large-width: layout-width(primary, max) + layout-width(secondary, max) +
   spacing(tight);
 
+// TODO: fix the slight missalignment with the results container and search bar
 @mixin offset-search-container($margin, $padding) {
   @if $margin {
     margin-left: calc((100% - #{$page-max-width}) / 2);
@@ -29,13 +30,14 @@ $large-width: layout-width(primary, max) + layout-width(secondary, max) +
     }
   }
 
+  // the +3.25rem is a hard coded value which isn't ideal but for prototype it works on big screen just to show
+  // but is not responsive
   @if $padding {
     padding-left: calc((100% - #{$page-max-width}) / 2);
 
     @include breakpoint-after($context-control-expand-after) {
       padding-left: calc(
-        (100% - #{$page-max-width + $context-control-extra-spacing}) / 2
-      );
+        (100% - #{$page-max-width + $context-control-extra-spacing}) / 2);
     }
 
     @media (max-width: $page-left-alignment-breakpoint-max) {
