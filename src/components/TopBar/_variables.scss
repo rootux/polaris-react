@@ -14,7 +14,7 @@ $page-left-alignment-breakpoint-max: 1268px;
 $large-width: layout-width(primary, max) + layout-width(secondary, max) +
   spacing(tight);
 
-@mixin offsetSearchContainerUsingPadding {
+@mixin offset-search-container-padding {
   padding-left: calc((100% - #{$page-max-width}) / 2);
 
   @include breakpoint-after($context-control-expand-after) {
@@ -28,7 +28,7 @@ $large-width: layout-width(primary, max) + layout-width(secondary, max) +
   }
 }
 
-@mixin offsetSearchContainerUsingMargin {
+@mixin offset-search-container-margin {
   margin-left: calc((100% - #{$page-max-width}) / 2);
 
   @include breakpoint-after($context-control-expand-after) {
