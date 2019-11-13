@@ -14,7 +14,7 @@ $page-left-alignment-breakpoint-max: 1268px;
 $large-width: layout-width(primary, max) + layout-width(secondary, max) +
   spacing(tight);
 
-@mixin offsetSearchContainer {
+@mixin offsetSearchContainerUsingPadding {
   padding-left: calc((100% - #{$page-max-width}) / 2);
 
   @include breakpoint-after($context-control-expand-after) {
@@ -25,5 +25,19 @@ $large-width: layout-width(primary, max) + layout-width(secondary, max) +
 
   @media (max-width: $page-left-alignment-breakpoint-max) {
     padding-left: 0;
+  }
+}
+
+@mixin offsetSearchContainerUsingMargin {
+  margin-left: calc((100% - #{$page-max-width}) / 2);
+
+  @include breakpoint-after($context-control-expand-after) {
+    margin-left: calc(
+      (100% - #{$page-max-width + $context-control-extra-spacing}) / 2
+    );
+  }
+
+  @media (max-width: $page-left-alignment-breakpoint-max) {
+    margin-left: 0;
   }
 }
