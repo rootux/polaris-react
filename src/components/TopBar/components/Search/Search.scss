@@ -17,7 +17,7 @@ $search-results-min-width: 45rem;
   padding: 0;
   width: 100%;
 
-  @include offset-search-container-padding;
+  @include offset-search-container($margin: false, $padding: true);
 
   @include breakpoint-after($not-condensed-content) {
     top: top-bar-height() - spacing('tight') + 0.4rem;
