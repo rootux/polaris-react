@@ -28,13 +28,14 @@ $search-results-min-width: 45rem;
   pointer-events: all;
 }
 
-// TODO: make it unable to dismiss over he nav bar
 .Backdrop {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  margin-left: layout-width(nav);
+  margin-top: top-bar-height();
 }
 
 .Overlay {
