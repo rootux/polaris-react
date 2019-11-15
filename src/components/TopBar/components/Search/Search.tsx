@@ -23,19 +23,25 @@ export class Search extends React.PureComponent<SearchProps, never> {
     );
 
     return (
-      <div
-        ref={this.node}
-        className={searchClassName}
-        onClick={this.handleDismiss}
-      >
-        <div className={styles.Overlay}>{children}</div>
-      </div>
+      <React.Fragment>
+        <div className={searchClassName}>
+          <div className={styles.Overlay}>{children}</div>
+        </div>
+        <div
+          className={styles.Backdrop}
+          ref={this.node}
+          onClick={this.handleDismiss}
+        />
+      </React.Fragment>
     );
   }
 
   private handleDismiss = ({target}: React.MouseEvent<HTMLElement>) => {
-    console.log('in handle dismiss');
     const {onDismiss} = this.props;
+    console.log(
+      'CLICK BACKDROP',
+      onDismiss != null && target === this.node.current,
+    );
 
     if (onDismiss != null && target === this.node.current) {
       onDismiss();

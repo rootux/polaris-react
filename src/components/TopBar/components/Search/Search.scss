@@ -4,7 +4,6 @@
 $page-layout-when-not-partially-condensed-absolute: rem(743px);
 $search-results-min-width: 45rem;
 
-// the changes to the css for the proper dismissal zone will need to go here
 .Search {
   position: absolute;
   z-index: z-index(search, $stacking-order);
@@ -17,18 +16,25 @@ $search-results-min-width: 45rem;
   padding: 0;
   width: 100%;
 
-  @include offset-search-container($margin: false, $padding: true);
-
   @include breakpoint-after($not-condensed-content) {
-    top: top-bar-height() - spacing('tight') + 0.4rem;
-    left: 0;
-    right: 0;
+    top: top-bar-height() - spacing();
+    left: auto;
+    right: auto;
   }
 }
 
 .visible {
   visibility: initial;
   pointer-events: all;
+}
+
+// TODO: make it unable to dismiss over he nav bar
+.Backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .Overlay {
