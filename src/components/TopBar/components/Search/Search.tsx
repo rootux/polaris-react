@@ -38,11 +38,6 @@ export class Search extends React.PureComponent<SearchProps, never> {
 
   private handleDismiss = ({target}: React.MouseEvent<HTMLElement>) => {
     const {onDismiss} = this.props;
-    console.log(
-      'CLICK BACKDROP',
-      onDismiss != null && target === this.node.current,
-    );
-
     if (onDismiss != null && target === this.node.current) {
       onDismiss();
     }
