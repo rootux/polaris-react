@@ -30,10 +30,15 @@ $search-results-min-width: 45rem;
 .Backdrop {
   position: fixed;
   top: top-bar-height();
-  left: layout-width(nav);
+  left: 0;
   right: 0;
   bottom: 0;
   z-index: z-index(search, $stacking-order) - 1;
+}
+
+.BackdropFilter {
+  background: color('sky');
+  opacity: 0.8;
 }
 
 .Overlay {
