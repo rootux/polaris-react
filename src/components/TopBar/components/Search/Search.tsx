@@ -7,6 +7,8 @@ export interface SearchProps {
   visible?: boolean;
   /** The content to display inside the search */
   children?: React.ReactNode;
+  /** Toggles opaque overlay */
+  backdropFilter?: boolean;
   /** Callback when the search is dismissed */
   onDismiss?(): void;
 }
@@ -15,11 +17,16 @@ export class Search extends React.PureComponent<SearchProps, never> {
   private node = React.createRef<HTMLDivElement>();
 
   render() {
-    const {visible, children} = this.props;
+    const {visible, children, backdropFilter} = this.props;
 
     const searchClassName = classNames(
       styles.Search,
       visible && styles.visible,
+    );
+
+    const backdropClassName = classNames(
+      styles.Backdrop,
+      backdropFilter && styles.BackdropFilter,
     );
 
     return (
@@ -28,7 +35,7 @@ export class Search extends React.PureComponent<SearchProps, never> {
           <div className={styles.Overlay}>{children}</div>
         </div>
         <div
-          className={styles.Backdrop}
+          className={backdropClassName}
           ref={this.node}
           onClick={this.handleDismiss}
         />
