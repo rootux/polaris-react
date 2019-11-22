@@ -124,19 +124,6 @@ describe('<TopBar />', () => {
 
       expect(topBar.find(Search).prop('visible')).toBe(true);
     });
-
-    it('passes the onSearchDismiss prop to search', () => {
-      const topBar = mountWithAppProvider(
-        <TopBar
-          searchResults={searchResults}
-          onSearchResultsDismiss={noop}
-          searchResultsVisible
-          searchField={searchField}
-        />,
-      );
-
-      expect(topBar.find(Search).prop('onDismiss')).toBe(noop);
-    });
   });
 
   describe('logo', () => {
