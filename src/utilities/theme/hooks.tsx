@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import {MissingAppProviderError} from '../errors';
-import {ThemeContext} from './context';
+import {ThemeContext, ParentContext} from './context';
 
 export function useTheme() {
   const theme = useContext(ThemeContext);
@@ -10,4 +10,14 @@ export function useTheme() {
   }
 
   return theme;
+}
+
+export function useParent() {
+  const parent = useContext(ParentContext);
+
+  // if (!parent) {
+  //   throw new MissingAppProviderError('No Parent was provided.');
+  // }
+
+  return parent;
 }

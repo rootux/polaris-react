@@ -1,8 +1,8 @@
-export {ThemeContext} from './context';
+export {ThemeContext, ParentContext} from './context';
 
-export {useTheme} from './hooks';
+export {useTheme, useParent} from './hooks';
 
-export {Theme, ThemeConfig, CustomPropertiesLike} from './types';
+export {Theme, ThemeConfig, CustomPropertiesLike, Parent} from './types';
 
 export {UNSTABLE_Color} from './color-adjustments';
 

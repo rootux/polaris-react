@@ -180,7 +180,7 @@ describe('<ThemeProvider />', () => {
           .find('div')
           .last()
           .props().style,
-      ).toStrictEqual('');
+      ).toStrictEqual({});
     });
     it.todo('does not set body text and background color');
     it.todo('inherits isLight from parent <ThemeProvider>');

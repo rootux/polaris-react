@@ -2,6 +2,8 @@ import React, {useMemo, useEffect} from 'react';
 import {
   ThemeContext,
   ThemeConfig,
+  useParent,
+  ParentContext,
   buildThemeContext,
   buildCustomProperties,
 } from '../../utilities/theme';
@@ -19,9 +21,10 @@ export function ThemeProvider({
   children,
 }: ThemeProviderProps) {
   const {unstableGlobalTheming = false} = useFeatures();
+  const {parent} = useParent();
   const customProperties = useMemo(
-    () => buildCustomProperties(themeConfig, unstableGlobalTheming),
-    [unstableGlobalTheming, themeConfig],
+    () => buildCustomProperties(themeConfig, unstableGlobalTheming, parent),
+    [unstableGlobalTheming, themeConfig, parent],
   );
   const theme = useMemo(
     () =>
@@ -44,7 +47,9 @@ export function ThemeProvider({
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div style={customProperties}>{children}</div>
+      <ParentContext.Provider value={{parent: true}}>
+        <div style={customProperties}>{children}</div>
+      </ParentContext.Provider>
     </ThemeContext.Provider>
   );
 }

@@ -18,9 +18,10 @@ import {colorAdjustments, UNSTABLE_Color} from './color-adjustments';
 export function buildCustomProperties(
   themeConfig: ThemeConfig,
   globalTheming: boolean,
+  hasParent: boolean,
 ): CustomPropertiesLike {
   return globalTheming
-    ? buildColors(themeConfig)
+    ? buildColors(themeConfig, hasParent)
     : buildLegacyColors(themeConfig);
 }
 
@@ -55,49 +56,58 @@ function hexToHsluvObj(hex: string) {
   };
 }
 
-export function buildColors(theme: ThemeConfig) {
+export function buildColors(theme: ThemeConfig, hasParent: boolean) {
   const colors = {
-    surface: UNSTABLE_Color.Surface,
-    onSurface: UNSTABLE_Color.OnSurface,
-    interactive: UNSTABLE_Color.Interactive,
-    neutral: UNSTABLE_Color.Neutral,
-    branded: UNSTABLE_Color.Branded,
-    critical: UNSTABLE_Color.Critical,
-    warning: UNSTABLE_Color.Warning,
-    highlight: UNSTABLE_Color.Highlight,
-    success: UNSTABLE_Color.Success,
+    ...(hasParent === true
+      ? {}
+      : {
+          surface: UNSTABLE_Color.Surface,
+          onSurface: UNSTABLE_Color.OnSurface,
+          interactive: UNSTABLE_Color.Interactive,
+          neutral: UNSTABLE_Color.Neutral,
+          branded: UNSTABLE_Color.Branded,
+          critical: UNSTABLE_Color.Critical,
+          warning: UNSTABLE_Color.Warning,
+          highlight: UNSTABLE_Color.Highlight,
+          success: UNSTABLE_Color.Success,
+        }),
     ...theme.UNSTABLE_colors,
   };
 
-  const lightSurface = isLight(hexToRgb(colors.surface));
+  if (hasParent === false) {
+    const lightSurface =
+      colors.surface == null ? false : isLight(hexToRgb(colors.surface));
 
-  const allColors = Object.entries(colorAdjustments).reduce(
-    (accumulator, [colorRole, colorAdjustment]) => {
-      if (colorAdjustment == null) return accumulator;
+    const allColors = Object.entries(colorAdjustments).reduce(
+      (accumulator, [colorRole, colorAdjustment]) => {
+        if (colorAdjustment == null) return accumulator;
 
-      const baseColor = hexToHsluvObj(colors[colorAdjustment.baseColor]);
-      const {
-        hue = baseColor.hue,
-        saturation = baseColor.saturation,
-        lightness = baseColor.lightness,
-        alpha = 1,
-      } = colorAdjustment[lightSurface ? 'light' : 'dark'];
+        const baseColor = hexToHsluvObj(colors[colorAdjustment.baseColor]);
+        const {
+          hue = baseColor.hue,
+          saturation = baseColor.saturation,
+          lightness = baseColor.lightness,
+          alpha = 1,
+        } = colorAdjustment[lightSurface ? 'light' : 'dark'];
 
-      return {
-        ...accumulator,
-        [colorRole]: hslToString({
-          ...colorToHsla(hsluvToHex([hue, saturation, lightness])),
-          alpha,
-        }),
-      };
-    },
-    {},
-  );
+        return {
+          ...accumulator,
+          [colorRole]: hslToString({
+            ...colorToHsla(hsluvToHex([hue, saturation, lightness])),
+            alpha,
+          }),
+        };
+      },
+      {},
+    );
 
-  return customPropertyTransformer({
-    ...allColors,
-    ...overrides(),
-  });
+    return customPropertyTransformer({
+      ...allColors,
+      ...overrides(),
+    });
+  } else {
+    return {};
+  }
 }
 
 function overrides() {

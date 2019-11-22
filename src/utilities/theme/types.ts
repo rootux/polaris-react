@@ -41,6 +41,10 @@ export interface Theme {
   UNSTABLE_cssCustomProperties?: string;
 }
 
+export interface Parent {
+  nested?: boolean;
+}
+
 interface HslaAdjustment {
   hue?: number;
   saturation?: number;
