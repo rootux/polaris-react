@@ -163,4 +163,29 @@ describe('<ThemeProvider />', () => {
       return null;
     }
   });
+
+  describe('when nested', () => {
+    it('does not set a default theme', () => {
+      const themeProvider = mountWithAppProvider(
+        <ThemeProvider theme={{}}>
+          <ThemeProvider theme={{}}>
+            <p>Hello</p>
+          </ThemeProvider>
+        </ThemeProvider>,
+        {features: {unstableGlobalTheming: true}},
+      );
+
+      expect(
+        themeProvider
+          .find('div')
+          .last()
+          .props().style,
+      ).toStrictEqual('');
+    });
+    it.todo('does not set body text and background color');
+    it.todo('inherits isLight from parent <ThemeProvider>');
+    it.todo(
+      'overrides isLight from parent <ThemeProvider> when provided a surface value',
+    );
+  });
 });
