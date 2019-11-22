@@ -182,6 +182,8 @@ describe('<ThemeProvider />', () => {
           .props().style,
       ).toStrictEqual({});
     });
+    it.todo('only adds css custom properties for color roles provided');
+
     it.todo('does not set body text and background color');
     it.todo('inherits isLight from parent <ThemeProvider>');
     it.todo(
