@@ -18,7 +18,7 @@ import {colorAdjustments, UNSTABLE_Color} from './color-adjustments';
 export function buildCustomProperties(
   themeConfig: ThemeConfig,
   globalTheming: boolean,
-  hasParent: boolean,
+  hasParent = false,
 ): CustomPropertiesLike {
   return globalTheming
     ? buildColors(themeConfig, hasParent)
@@ -56,7 +56,7 @@ function hexToHsluvObj(hex: string) {
   };
 }
 
-export function buildColors(theme: ThemeConfig, hasParent: boolean) {
+export function buildColors(theme: ThemeConfig, hasParent = false) {
   const colors: ThemeConfig['UNSTABLE_colors'] = {
     ...(hasParent === true
       ? {}
