@@ -182,6 +182,28 @@ describe('<ThemeProvider />', () => {
           .props().style,
       ).toStrictEqual({});
     });
+
+    it('does not set overrides', () => {
+      const themeProvider = mountWithAppProvider(
+        <ThemeProvider theme={{}}>
+          <ThemeProvider theme={{}}>
+            <p>Hello</p>
+          </ThemeProvider>
+        </ThemeProvider>,
+        {features: {unstableGlobalTheming: true}},
+      );
+
+      expect(
+        themeProvider
+          .find('div')
+          .last()
+          .props().style,
+      ).not.toStrictEqual(
+        expect.objectContaining({
+          '--p-override-zero': '0',
+        }),
+      );
+    });
     it('adds css custom properties for color roles provided', () => {
       const themeProvider = mountWithAppProvider(
         <ThemeProvider
