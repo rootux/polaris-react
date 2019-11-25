@@ -57,7 +57,7 @@ function hexToHsluvObj(hex: string) {
 }
 
 export function buildColors(theme: ThemeConfig, hasParent: boolean) {
-  const colors = {
+  const colors: ThemeConfig['UNSTABLE_colors'] = {
     ...(hasParent === true
       ? {}
       : {
@@ -74,40 +74,38 @@ export function buildColors(theme: ThemeConfig, hasParent: boolean) {
     ...theme.UNSTABLE_colors,
   };
 
-  if (hasParent === false) {
-    const lightSurface =
-      colors.surface == null ? false : isLight(hexToRgb(colors.surface));
+  if (hasParent === true && Object.entries(colors).length === 0) return {};
 
-    const allColors = Object.entries(colorAdjustments).reduce(
-      (accumulator, [colorRole, colorAdjustment]) => {
-        if (colorAdjustment == null) return accumulator;
+  const lightSurface =
+    colors.surface == null ? false : isLight(hexToRgb(colors.surface));
 
-        const baseColor = hexToHsluvObj(colors[colorAdjustment.baseColor]);
-        const {
-          hue = baseColor.hue,
-          saturation = baseColor.saturation,
-          lightness = baseColor.lightness,
-          alpha = 1,
-        } = colorAdjustment[lightSurface ? 'light' : 'dark'];
+  const allColors = Object.entries(colorAdjustments).reduce(
+    (accumulator, [colorRole, colorAdjustment]) => {
+      if (colorAdjustment == null) return accumulator;
 
-        return {
-          ...accumulator,
-          [colorRole]: hslToString({
-            ...colorToHsla(hsluvToHex([hue, saturation, lightness])),
-            alpha,
-          }),
-        };
-      },
-      {},
-    );
+      const baseColor = hexToHsluvObj(colors[colorAdjustment.baseColor] || '');
+      const {
+        hue = baseColor.hue,
+        saturation = baseColor.saturation,
+        lightness = baseColor.lightness,
+        alpha = 1,
+      } = colorAdjustment[lightSurface ? 'light' : 'dark'];
 
-    return customPropertyTransformer({
-      ...allColors,
-      ...overrides(),
-    });
-  } else {
-    return {};
-  }
+      return {
+        ...accumulator,
+        [colorRole]: hslToString({
+          ...colorToHsla(hsluvToHex([hue, saturation, lightness])),
+          alpha,
+        }),
+      };
+    },
+    {},
+  );
+
+  return customPropertyTransformer({
+    ...allColors,
+    ...overrides(),
+  });
 }
 
 function overrides() {

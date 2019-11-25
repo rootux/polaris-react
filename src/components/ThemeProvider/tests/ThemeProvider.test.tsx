@@ -182,7 +182,33 @@ describe('<ThemeProvider />', () => {
           .props().style,
       ).toStrictEqual({});
     });
-    it.todo('only adds css custom properties for color roles provided');
+    it('adds css custom properties for color roles provided', () => {
+      const themeProvider = mountWithAppProvider(
+        <ThemeProvider
+          theme={{
+            UNSTABLE_colors: {surface: '#FFFFFF'},
+          }}
+        >
+          <ThemeProvider
+            theme={{
+              UNSTABLE_colors: {surface: '#000000'},
+            }}
+          >
+            <p>Hello</p>
+          </ThemeProvider>
+        </ThemeProvider>,
+        {features: {unstableGlobalTheming: true}},
+      );
+
+      expect(
+        themeProvider
+          .find('div')
+          .last()
+          .props().style,
+      ).toStrictEqual(
+        expect.objectContaining({'--p-surface': 'hsla(0, 0%, 0%, 1)'}),
+      );
+    });
 
     it.todo('does not set body text and background color');
     it.todo('inherits isLight from parent <ThemeProvider>');
