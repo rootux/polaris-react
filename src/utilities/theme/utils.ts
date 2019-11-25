@@ -18,7 +18,7 @@ import {colorAdjustments, UNSTABLE_Color} from './color-adjustments';
 export function buildCustomProperties(
   themeConfig: ThemeConfig,
   globalTheming: boolean,
-  hasParent = false,
+  hasParent?: boolean,
 ): CustomPropertiesLike {
   return globalTheming
     ? buildColors(themeConfig, hasParent)
@@ -56,7 +56,7 @@ function hexToHsluvObj(hex: string) {
   };
 }
 
-export function buildColors(theme: ThemeConfig, hasParent = false) {
+export function buildColors(theme: ThemeConfig, hasParent?: boolean) {
   const colors: ThemeConfig['UNSTABLE_colors'] = {
     ...(hasParent === true
       ? {}
@@ -74,16 +74,21 @@ export function buildColors(theme: ThemeConfig, hasParent = false) {
     ...theme.UNSTABLE_colors,
   };
 
-  if (hasParent === true && Object.entries(colors).length === 0) return {};
+  if (
+    hasParent === true &&
+    Object.values(colors).filter((value) => value != null).length === 0
+  )
+    return {};
 
   const lightSurface =
-    colors.surface == null ? false : isLight(hexToRgb(colors.surface));
+    colors.surface == null ? true : isLight(hexToRgb(colors.surface));
 
   const allColors = Object.entries(colorAdjustments).reduce(
     (accumulator, [colorRole, colorAdjustment]) => {
-      if (colorAdjustment == null) return accumulator;
+      const hexBaseColor = colors[colorAdjustment.baseColor];
+      if (colorAdjustment == null || hexBaseColor == null) return accumulator;
 
-      const baseColor = hexToHsluvObj(colors[colorAdjustment.baseColor] || '');
+      const baseColor = hexToHsluvObj(hexBaseColor);
       const {
         hue = baseColor.hue,
         saturation = baseColor.saturation,
@@ -104,7 +109,7 @@ export function buildColors(theme: ThemeConfig, hasParent = false) {
 
   return customPropertyTransformer({
     ...allColors,
-    ...overrides(),
+    ...(hasParent === false && overrides()),
   });
 }
 

@@ -211,7 +211,42 @@ describe('<ThemeProvider />', () => {
     });
 
     it.todo('does not set body text and background color');
-    it.todo('inherits isLight from parent <ThemeProvider>');
+
+    it('inherits isLight from parent <ThemeProvider>', () => {
+      const themeProvider = mountWithAppProvider(
+        <ThemeProvider
+          theme={{
+            UNSTABLE_colors: {surface: '#000000'},
+          }}
+        >
+          <ThemeProvider
+            theme={{
+              UNSTABLE_colors: {critical: '#FFFEEE'},
+            }}
+          >
+            <p>Hello</p>
+          </ThemeProvider>
+        </ThemeProvider>,
+        {features: {unstableGlobalTheming: true}},
+      );
+
+      const {style} = themeProvider
+        .find('div')
+        .last()
+        .props();
+      expect(style).toStrictEqual(
+        expect.objectContaining({
+          '--p-critical-surface-subdued':
+            'hsla(58, 100%, 7.000000000000001%, 1)',
+        }),
+      );
+      expect(style).not.toStrictEqual(
+        expect.objectContaining({
+          '--p-critical-surface-subdued': 'hsla(57, 100%, 89%, 1)',
+        }),
+      );
+    });
+
     it.todo(
       'overrides isLight from parent <ThemeProvider> when provided a surface value',
     );
