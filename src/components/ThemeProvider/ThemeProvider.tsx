@@ -3,6 +3,7 @@ import {
   ThemeContext,
   ThemeConfig,
   useParent,
+  useTheme,
   ParentContext,
   buildThemeContext,
   buildCustomProperties,
@@ -22,9 +23,17 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const {unstableGlobalTheming = false} = useFeatures();
   const {nested} = useParent();
+  const {UNSTABLE_colors = {}} = useTheme();
+  const parentSurface = UNSTABLE_colors.surface;
   const customProperties = useMemo(
-    () => buildCustomProperties(themeConfig, unstableGlobalTheming, nested),
-    [unstableGlobalTheming, themeConfig, nested],
+    () =>
+      buildCustomProperties(
+        themeConfig,
+        unstableGlobalTheming,
+        nested,
+        parentSurface,
+      ),
+    [unstableGlobalTheming, themeConfig, nested, parentSurface],
   );
   const theme = useMemo(
     () =>

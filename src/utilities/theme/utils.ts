@@ -19,9 +19,10 @@ export function buildCustomProperties(
   themeConfig: ThemeConfig,
   globalTheming: boolean,
   hasParent?: boolean,
+  parentSurface?: string,
 ): CustomPropertiesLike {
   return globalTheming
-    ? buildColors(themeConfig, hasParent)
+    ? buildColors(themeConfig, hasParent, parentSurface)
     : buildLegacyColors(themeConfig);
 }
 
@@ -29,10 +30,11 @@ export function buildThemeContext(
   themeConfig: ThemeConfig,
   cssCustomProperties?: CustomPropertiesLike,
 ): Theme {
-  const {logo} = themeConfig;
+  const {logo, UNSTABLE_colors} = themeConfig;
   return {
     logo,
     UNSTABLE_cssCustomProperties: toString(cssCustomProperties),
+    UNSTABLE_colors,
   };
 }
 
@@ -56,7 +58,11 @@ function hexToHsluvObj(hex: string) {
   };
 }
 
-export function buildColors(theme: ThemeConfig, hasParent?: boolean) {
+export function buildColors(
+  theme: ThemeConfig,
+  hasParent?: boolean,
+  parentSurface?: string,
+) {
   const colors: ThemeConfig['UNSTABLE_colors'] = {
     ...(hasParent === true
       ? {}
@@ -81,7 +87,9 @@ export function buildColors(theme: ThemeConfig, hasParent?: boolean) {
     return {};
 
   const lightSurface =
-    colors.surface == null ? true : isLight(hexToRgb(colors.surface));
+    colors.surface == null
+      ? isLight(hexToRgb(parentSurface || ''))
+      : isLight(hexToRgb(colors.surface));
 
   const allColors = Object.entries(colorAdjustments).reduce(
     (accumulator, [colorRole, colorAdjustment]) => {

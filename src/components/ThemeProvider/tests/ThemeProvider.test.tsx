@@ -267,8 +267,39 @@ describe('<ThemeProvider />', () => {
       );
     });
 
-    it.todo(
-      'overrides isLight from parent <ThemeProvider> when provided a surface value',
-    );
+    it('overrides isLight from parent <ThemeProvider> when provided a surface value', () => {
+      const themeProvider = mountWithAppProvider(
+        <ThemeProvider
+          theme={{
+            UNSTABLE_colors: {surface: '#000000'},
+          }}
+        >
+          <ThemeProvider
+            theme={{
+              UNSTABLE_colors: {surface: '#FFFFFF', critical: '#FFFEEE'},
+            }}
+          >
+            <p>Hello</p>
+          </ThemeProvider>
+        </ThemeProvider>,
+        {features: {unstableGlobalTheming: true}},
+      );
+
+      const {style} = themeProvider
+        .find('div')
+        .last()
+        .props();
+      expect(style).toStrictEqual(
+        expect.objectContaining({
+          '--p-critical-surface-subdued': 'hsla(57, 100%, 89%, 1)',
+        }),
+      );
+      expect(style).not.toStrictEqual(
+        expect.objectContaining({
+          '--p-critical-surface-subdued':
+            'hsla(58, 100%, 7.000000000000001%, 1)',
+        }),
+      );
+    });
   });
 });
