@@ -21,10 +21,10 @@ export function ThemeProvider({
   children,
 }: ThemeProviderProps) {
   const {unstableGlobalTheming = false} = useFeatures();
-  const {parent} = useParent();
+  const {nested} = useParent();
   const customProperties = useMemo(
-    () => buildCustomProperties(themeConfig, unstableGlobalTheming, parent),
-    [unstableGlobalTheming, themeConfig, parent],
+    () => buildCustomProperties(themeConfig, unstableGlobalTheming, nested),
+    [unstableGlobalTheming, themeConfig, nested],
   );
   const theme = useMemo(
     () =>
@@ -41,13 +41,15 @@ export function ThemeProvider({
   const color = customProperties['--p-text-on-surface'] || '';
 
   useEffect(() => {
-    document.body.style.backgroundColor = backgroundColor;
-    document.body.style.color = color;
-  }, [backgroundColor, color]);
+    if (nested === false) {
+      document.body.style.backgroundColor = backgroundColor;
+      document.body.style.color = color;
+    }
+  }, [backgroundColor, color, nested]);
 
   return (
     <ThemeContext.Provider value={theme}>
-      <ParentContext.Provider value={{parent: true}}>
+      <ParentContext.Provider value={{nested: true}}>
         <div style={customProperties}>{children}</div>
       </ParentContext.Provider>
     </ThemeContext.Provider>

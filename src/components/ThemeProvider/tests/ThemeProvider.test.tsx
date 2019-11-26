@@ -232,8 +232,6 @@ describe('<ThemeProvider />', () => {
       );
     });
 
-    it.todo('does not set body text and background color');
-
     it('inherits isLight from parent <ThemeProvider>', () => {
       const themeProvider = mountWithAppProvider(
         <ThemeProvider

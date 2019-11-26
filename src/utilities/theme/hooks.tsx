@@ -15,9 +15,9 @@ export function useTheme() {
 export function useParent() {
   const parent = useContext(ParentContext);
 
-  // if (!parent) {
-  //   throw new MissingAppProviderError('No Parent was provided.');
-  // }
+  if (!parent) {
+    throw new MissingAppProviderError('No Parent was provided.');
+  }
 
   return parent;
 }
