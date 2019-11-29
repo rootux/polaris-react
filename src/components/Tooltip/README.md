@@ -76,7 +76,7 @@ Use only when necessary to provide an explanation for an interface element.
 
 ### Light tooltip
 
-Changes the background color to white.
+A light tooltip draws less attention than the default tooltip. Use only when necessary to provide an explanation for an interface element with less emphasis.
 
 ```jsx
 <div style={{padding: '75px 0'}}>
